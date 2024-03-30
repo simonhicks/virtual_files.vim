@@ -3,35 +3,42 @@ if exists("g:loaded_virtual_files_vim_autoload")
 endif
 let g:loaded_virtual_files_vim_autoload = 1
 
-" TODO handle errors during write better (currently it still sets to
-"      unmodified, and then won't rewrite when unmodified
-
 function! s:getAbsolutePath()
   return fnamemodify(expand('<amatch>'), ':p')
 endfunction
 
-function! virtual_files#readCmd(handler, isModifiable)
-  let l:filename = expand('<amatch>')
-  let Reader = function(a:handler)
-  let l:lines = Reader(l:filename)
-  let l:tmpfile = tempname()
-  call writefile(l:lines, l:tmpfile)
-  exec "read " . l:tmpfile
-  0d
-  if a:isModifiable
-    setlocal buftype=acwrite
-  else
-    setlocal buftype=nofile
-    setlocal nomodifiable
-  endif
+function! virtual_files#readCmd(handler, isModifiable) abort
+    let l:filename = expand('<amatch>')
+    try
+      let Reader = function(a:handler)
+      let l:lines = Reader(l:filename)
+      let l:tmpfile = tempname()
+      call writefile(l:lines, l:tmpfile)
+      exec "read " . l:tmpfile
+      0d
+      if a:isModifiable
+        setlocal buftype=acwrite
+      else
+        setlocal buftype=nofile
+        setlocal nomodifiable
+      endif
+    catch
+      echoerr 'Exception while opening '.fnamemodify(l:filename, ':.').': '.v:exception
+      call interrupt()
+    endtry
 endfunction
 
-function! virtual_files#writeCmd(handler)
+function! virtual_files#writeCmd(handler) abort
   let l:filename = expand('<amatch>')
   if getbufvar('%', '&modified')
-    let Writer = function(a:handler)
-    call Writer(l:filename, getline(0, '$'))
-    set nomodified
+    try
+      let Writer = function(a:handler)
+      call Writer(l:filename, getline(0, '$'))
+      set nomodified
+    catch
+      echoerr v:exception
+      call interrupt()
+    endtry
   endif
 endfunction
 
