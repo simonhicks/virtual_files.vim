@@ -15,7 +15,8 @@ This sets up a pair of autocomands for reading and writing virtual files.
                       of lines to use as the buffer
     a:writer   String  the name of the function used to write the file. The
                       function should take a string filepath and a list of
-                      lines from the buffer, and can do whatever you want
+                      lines from the buffer, and can do whatever you want. If
+                      you don't need a writer function, use ''
 
 Here's an example of how to use it.
 
@@ -63,3 +64,5 @@ call virtual_files#addHandlers(l:virtual_file_handlers)
 ## `virtual_files#clearHandlers()`
 
 This just clears all the handlers you've previously set.
+
+
