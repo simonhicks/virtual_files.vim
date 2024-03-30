@@ -2,9 +2,11 @@
 
 This is a utility plugin that makes it easy to set up buffer read/write commands in vim. You can use
 it to create virtual filetypes or virtual folders that are read and saved using your custom code.
-It provides three new functions
 
-## `virtual_files#addHandler(pattern, reader, writer)`
+## Usage
+This plugin provides three new functions
+
+### `virtual_files#addHandler(pattern, reader, writer)`
 
 This sets up a pair of autocomands for reading and writing virtual files.
 
@@ -45,7 +47,7 @@ endfunction
 call virtual_files#addHandler('/home/simon/test/*.md', 'TestWriter', 'TestReader')
 ```
 
-## `virtual_files#addHandlers(file_handlers)`
+### `virtual_files#addHandlers(file_handlers)`
 
 This is a thin wrapper around `virtual_files#addHandler` which takes a map of handlers, and sets them all
 up at once. For the example above, you can use it like this:
@@ -61,8 +63,13 @@ let l:virtual_file_handlers = {
 call virtual_files#addHandlers(l:virtual_file_handlers)
 ```
 
-## `virtual_files#clearHandlers()`
+### `virtual_files#clearHandlers()`
 
 This just clears all the handlers you've previously set.
 
 
+## Contributing
+
+There's a test configuration in `test/virtual_files.vim`, along with a script for how to test all
+the functionality this supports in the comments. If you want to make a PR, just make sure you update
+the tests and this README
