@@ -44,7 +44,7 @@ endfunction
 call virtual_files#addHandler('/home/simon/test/*.md', 'TestWriter', 'TestReader')
 ```
 
-## `virtual_files#setHandlers(file_handlers)`
+## `virtual_files#addHandlers(file_handlers)`
 
 This is a thin wrapper around `virtual_files#addHandler` which takes a map of handlers, and sets them all
 up at once. For the example above, you can use it like this:
@@ -57,7 +57,7 @@ let l:virtual_file_handlers = {
       \   }
       \ }
 
-call virtual_files#setHandlers(l:virtual_file_handlers)
+call virtual_files#addHandlers(l:virtual_file_handlers)
 ```
 
 ## `virtual_files#clearHandlers()`

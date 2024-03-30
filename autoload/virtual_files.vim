@@ -4,7 +4,9 @@ endif
 let g:loaded_virtual_files_vim_autoload = 1
 
 " TODO make it so that writer is optional, and buffers loaded without an
-" associated writer are set to be unmodifiable
+"      associated writer are set to be unmodifiable
+" TODO handle errors during write better (currently it still sets to
+"      unmodified, and then won't rewrite when unmodified
 
 function virtual_files#readCmd(handler)
   let l:filename = expand('<amatch>')
@@ -46,7 +48,7 @@ endfunction
 " a:file_handlers should look like this:
 "
 " {'/some/directory/*.md': {'reader': 'ReadFunctionName', 'writer': 'WriteFunctionName'}}
-function virtual_files#setHandlers(file_handlers)
+function virtual_files#addHandlers(file_handlers)
   for pattern in keys(a:file_handlers)
     let l:handlers = a:file_handlers[pattern]
     call virtual_files#addHandler(pattern, l:handlers['reader'], l:handlers['writer'])
